@@ -1,0 +1,18 @@
+/* your source here */
+
+.v-StatusBar {font-weight: bolder !important;}
+.v-UsageInfo {display: none !important;}
+
+/*
+ * .v-FolderSource--inbox.v-FolderSource:after {
+ * content: " " attr(title);
+ * font-size: 12px;
+tatusBar {font-weight: bolder !important;}
+.v-UsageInfo {display: none !important;}
+
+/*
+ * .v-FolderSource--inbox.v-FolderSource:after {
+ * content: " " attr(title);
+ * font-size: 12px;
+ * }
+ * */
