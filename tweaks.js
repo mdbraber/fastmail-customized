@@ -13,13 +13,12 @@ function init() {
   // kill the timer
   if (_timer) clearInterval(_timer);
 
-  console.log("Called init handler")
-
-  console.log("e" + FastMail.keyboardShortcuts._shortcuts.e)
+  // Moved Saved searches right below the Inbox
   O.require( 'base', function () {
     FastMail.SavedSearch.implement({ precedence: 1 }, true );
   });
 
+  // For some reason we have to wait otherwise the array gets duplicated (probably by Fastmail still initializing)
   setTimeout(function(){ FastMail.keyboardShortcuts._shortcuts.e=FastMail.keyboardShortcuts._shortcuts.y }, 2000);
   document.getElementById("v12").accessKey = "e";
 
