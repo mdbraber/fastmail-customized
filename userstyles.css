@@ -1,18 +1,20 @@
-/* your source here */
-
+/* Show more clear how many messages are in this mailbox */
 .v-StatusBar {font-weight: bolder !important;}
+
+/* Hide usage info in the sidebar */
 .v-UsageInfo {display: none !important;}
 
-/*
- * .v-FolderSource--inbox.v-FolderSource:after {
- * content: " " attr(title);
- * font-size: 12px;
-tatusBar {font-weight: bolder !important;}
-.v-UsageInfo {display: none !important;}
+/* Don't show all the filter options */
+#FilterSelector .v-PushSelect-option[data-index="2"] { display: none !important; }
+#FilterSelector .v-PushSelect-option[data-index="3"] { display: none !important; }
+#FilterSelector .v-PushSelect-option[data-index="4"] { display: none !important; }
+
+.v-MailboxItem-from { }
+.v-MailboxItem-subject { }
 
 /*
- * .v-FolderSource--inbox.v-FolderSource:after {
- * content: " " attr(title);
- * font-size: 12px;
- * }
- * */
+.v-FolderSource--inbox.v-FolderSource:after {
+content: " " attr(title);
+font-size: 12px;
+}
+*/
