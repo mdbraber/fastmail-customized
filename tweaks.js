@@ -4,28 +4,28 @@ var ready = false;
 
 function init() {
 
-  // quit if this function has already been called
-  if (!document.getElementById("mail") || ready) return;
+	// quit if this function has already been called
+	if (!document.getElementById("mail") || ready) return;
 
-  // flag this function so we don't do the same thing twice
-  ready = true;
+	// flag this function so we don't do the same thing twice
+	ready = true;
 
-  // kill the timer
-  if (_timer) clearInterval(_timer);
+	// kill the timer
+	if (_timer) clearInterval(_timer);
 
-  // Moved Saved searches right below the Inbox
-  O.require( 'base', function () {
-    FastMail.SavedSearch.implement({ precedence: 1 }, true );
-  });
+	// Moved Saved searches right below the Inbox
+	O.require( 'base', function () {
+		FastMail.SavedSearch.implement({ precedence: 1 }, true );
+	});
 
-  // For some reason we have to wait otherwise the array gets duplicated (probably by Fastmail still initializing)
-  setTimeout(function(){ FastMail.keyboardShortcuts._shortcuts.e=FastMail.keyboardShortcuts._shortcuts.y }, 2000);
-  document.getElementById("v12").accessKey = "e";
+	// For some reason we have to wait otherwise the array gets duplicated (probably by Fastmail still initializing)
+	setTimeout(function(){ FastMail.keyboardShortcuts._shortcuts.e=FastMail.keyboardShortcuts._shortcuts.y }, 2000);
+	document.getElementById("v12").accessKey = "e";
 
 };
 
 var _timer = setInterval(function() {
-  if (/loaded|complete/.test(document.readyState)) {
-    init(); // call the onload handler
-  }
+	if (/loaded|complete/.test(document.readyState)) {
+		init(); // call the onload handler
+	}
 }, 500);
