@@ -1,9 +1,9 @@
-;var ready = false;
+var ready = false;
 
 function init() {
 
     // quit if this function has already been called
-    if (!document.getElementById("mail") || ready) { return; }
+    if (!document.getElementById("mail") || !document.getElementById("selectAll") || ready) { return; }
 
     // flag this function so we don't do the same thing twice
     ready = true;
@@ -24,7 +24,10 @@ function init() {
         delete FastMail.mail.threadViewController.keys.e;
         
         // Add the filter to the reading pane message list
-        FastMail.views.mailbox.childViews[0]._configs["short"]["left"] = ["selectAll","filter","pin"];
+        FastMail.views.mailbox.childViews[0].registerConfig("short",{left: ["selectAll","filter","pin"]});
+       
+        // register observer to update the mailboxName
+        FastMail.mail.screenController.addObserverForKey("mailboxTitle",window,"updateMailboxName");
     });
 
     if (FastMail.keyboardShortcuts._shortcuts.y != undefined) {
@@ -48,11 +51,18 @@ function init() {
         FastMail.keyboardShortcuts.register("e",archiveKey[0][0],archiveKey[0][1]);
         // register the new expand shortcut
         //FastMail.keyboardShortcuts.register("y",expandKey[0][0],expandKey[0][1]);
+        
+        // Prevent external links from opening another window (Fastmail users a script to check for MSIE bug?)
+        O.WindowController.openExternal = function(i){open(i,"_blank");}
+        
     }
 
     // only display "All mail" and "Unread" in the filter selector
     // (I'm using different folders for Mailinglists and Notifications)
     FastMail.views.mailbox.childViews[0].redraw();
+
+    // Insert the mailbox name after the "selectAll" button (because we're not showing the sidebar)
+    document.getElementById("selectAll").insertAdjacentHTML('afterend','<span id="mailboxName">'+document.querySelector('.app-source.app-source--depth0.is-selected span').innerText+'</span>');
     
     // skip - we do this in CSS
     //if (document.getElementById("FilterSelector") != undefined) {
@@ -67,11 +77,15 @@ function init() {
 
 };
 
+window.updateMailboxName = function updateMailboxName(obj,key,oldValue,newValue) {
+    //console.log(oldValue + "/" + newValue);
+    regex = /\((\d*)\) (.*)/;
+    document.getElementById("mailboxName").innerHTML = newValue.replace(regex, "$2 ($1)");
+}
+
 // there is no good domloaded support in Fluid so we need a timer until ready
 var _timer = setInterval(function() {
   if (/loaded|complete/.test(document.readyState)) {
     init(); // call the onload handler
   }
 }, 500);
-
-
