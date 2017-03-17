@@ -2,10 +2,10 @@
 setInterval(updateDockBadge, 3000);
 
 function updateDockBadge() {
-	var count = document.getElementsByClassName('v-FolderSource-badge')[0].textContent;
-	if ( count === '0' ) {
-        window.fluid.dockBadge = '';
-	} else {
-        window.fluid.dockBadge = count;	
-	}
+    	var count = document.querySelector('.v-FolderSource--inbox > .v-FolderSource-badge').textContent
+    	if ( count === '0' ) {
+            window.fluid.dockBadge = '';
+    	} else {
+            window.fluid.dockBadge = count;	
+    	}
 }
