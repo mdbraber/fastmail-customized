@@ -27,7 +27,10 @@ function init() {
         FastMail.views.mailbox.childViews[0].registerConfig("short",{left: ["selectAll","filter","pin"]});
        
         // register observer to update the mailboxName
-        FastMail.mail.screenController.addObserverForKey("mailboxTitle",window,"updateMailboxName");
+        FastMail.mail.screenController.addObserverForKey("mailboxTitle",window,"switchMailbox");
+
+        // Save the 'e' shortcut object 
+        window._e = FastMail.keyboardShortcuts._shortcuts.e;
     });
 
     if (FastMail.keyboardShortcuts._shortcuts.y != undefined) {
@@ -63,6 +66,9 @@ function init() {
 
     // Insert the mailbox name after the "selectAll" button (because we're not showing the sidebar)
     document.getElementById("selectAll").insertAdjacentHTML('afterend','<span id="mailboxName">'+document.querySelector('.app-source.app-source--depth0.is-selected span').innerText+'</span>');
+
+    // Remove the placeholder in search (it overlaps w/ saved searches when we quick-switch)
+    document.querySelector("#v6 input").placeholder = ""
     
     // skip - we do this in CSS
     //if (document.getElementById("FilterSelector") != undefined) {
@@ -77,10 +83,33 @@ function init() {
 
 };
 
-window.updateMailboxName = function updateMailboxName(obj,key,oldValue,newValue) {
-    //console.log(oldValue + "/" + newValue);
+window.switchMailbox = function updateMailboxName(obj,key,oldValue,newValue) {
+
+    console.log(oldValue + "/" + newValue);
+
     regex = /\((\d*)\) (.*)/;
     document.getElementById("mailboxName").innerHTML = newValue.replace(regex, "$2 ($1)");
+
+    if(!window._e) {
+        window._e = FastMail.keyboardShortcuts._shortcuts.e;
+    }
+
+    if(newValue.contains("Inbox")) {
+        document.querySelector("#v12").style.display="";
+        document.querySelector("#v12 + span").style.display="";
+        //if(FastMail.keyboardShortcuts._shortcuts.e != undefined) {
+            console.log("register e");
+            FastMail.keyboardShortcuts.register("e",window._e[0][0],window._e[0][1]);
+        //}
+    } else {
+        document.querySelector("#v12").style.display="none";
+        document.querySelector("#v12 + span").style.display="none";
+        //if(FastMail.keyboardShortcuts._shortcuts.e == undefined) {
+            console.log("deregister e");
+            FastMail.keyboardShortcuts.deregister("e",window._e[0][0],window._e[0][1]);
+        //}
+    }
+
 }
 
 // there is no good domloaded support in Fluid so we need a timer until ready
